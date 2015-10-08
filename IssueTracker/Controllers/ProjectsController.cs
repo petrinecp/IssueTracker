@@ -1,117 +1,115 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using IssueTracker.DAL;
 using IssueTracker.Models;
 
-namespace IssueTracker
+namespace IssueTracker.Controllers
 {
-    public class StatesController : Controller
+    public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: States
+        // GET: Projects
         public ActionResult Index()
         {
-            return View(db.States.ToList());
+            return View(db.Projects.ToList());
         }
 
-        // GET: States/Details/5
+        // GET: Projects/Details/5
         public ActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            State state = db.States.Find(id);
-            if (state == null)
+            Project project = db.Projects.Find(id);
+            if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(state);
+            return View(project);
         }
 
-        // GET: States/Create
+        // GET: Projects/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: States/Create
+        // POST: Projects/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title")] State state)
+        public ActionResult Create([Bind(Include = "Id,Title")] Project project)
         {
             if (ModelState.IsValid)
             {
-                state.Id = Guid.NewGuid();
-                db.States.Add(state);
+                project.Id = Guid.NewGuid();
+                db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(state);
+            return View(project);
         }
 
-        // GET: States/Edit/5
+        // GET: Projects/Edit/5
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            State state = db.States.Find(id);
-            if (state == null)
+            Project project = db.Projects.Find(id);
+            if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(state);
+            return View(project);
         }
 
-        // POST: States/Edit/5
+        // POST: Projects/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title")] State state)
+        public ActionResult Edit([Bind(Include = "Id,Title")] Project project)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(state).State = EntityState.Modified;
+                db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(state);
+            return View(project);
         }
 
-        // GET: States/Delete/5
+        // GET: Projects/Delete/5
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            State state = db.States.Find(id);
-            if (state == null)
+            Project project = db.Projects.Find(id);
+            if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(state);
+            return View(project);
         }
 
-        // POST: States/Delete/5
+        // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            State state = db.States.Find(id);
-            db.States.Remove(state);
+            Project project = db.Projects.Find(id);
+            db.Projects.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

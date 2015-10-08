@@ -1,123 +1,115 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using IssueTracker.DAL;
 using IssueTracker.Models;
 
-namespace IssueTracker
+namespace IssueTracker.Controllers
 {
-    public class CommentsController : Controller
+    public class StatesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Comments
+        // GET: States
         public ActionResult Index()
         {
-            var comments = db.Comments.Include(c => c.Issue);
-            return View(comments.ToList());
+            return View(db.States.ToList());
         }
 
-        // GET: Comments/Details/5
+        // GET: States/Details/5
         public ActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
+            State state = db.States.Find(id);
+            if (state == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(state);
         }
 
-        // GET: Comments/Create
+        // GET: States/Create
         public ActionResult Create()
         {
-            ViewBag.IssueId = new SelectList(db.Issues, "Id", "Name");
             return View();
         }
 
-        // POST: Comments/Create
+        // POST: States/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Text,Posted,IssueId")] Comment comment)
+        public ActionResult Create([Bind(Include = "Id,Title")] State state)
         {
             if (ModelState.IsValid)
             {
-                comment.Id = Guid.NewGuid();
-                comment.Posted = DateTime.Now;
-                db.Comments.Add(comment);
+                state.Id = Guid.NewGuid();
+                db.States.Add(state);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IssueId = new SelectList(db.Issues, "Id", "Name", comment.IssueId);
-            return View(comment);
+            return View(state);
         }
 
-        // GET: Comments/Edit/5
+        // GET: States/Edit/5
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
+            State state = db.States.Find(id);
+            if (state == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IssueId = new SelectList(db.Issues, "Id", "Name", comment.IssueId);
-            return View(comment);
+            return View(state);
         }
 
-        // POST: Comments/Edit/5
+        // POST: States/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Text,Posted,IssueId")] Comment comment)
+        public ActionResult Edit([Bind(Include = "Id,Title")] State state)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(comment).State = EntityState.Modified;
+                db.Entry(state).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IssueId = new SelectList(db.Issues, "Id", "Name", comment.IssueId);
-            return View(comment);
+            return View(state);
         }
 
-        // GET: Comments/Delete/5
+        // GET: States/Delete/5
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
+            State state = db.States.Find(id);
+            if (state == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(state);
         }
 
-        // POST: Comments/Delete/5
+        // POST: States/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Comment comment = db.Comments.Find(id);
-            db.Comments.Remove(comment);
+            State state = db.States.Find(id);
+            db.States.Remove(state);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

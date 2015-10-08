@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace IssueTracker.Models
 {
     public class Comment : BaseEntity
     {
-        public ApplicationUser User { get; set; }
+        // Foreign keys
+        public Guid IssueId { get; set; }
+
+        // Parameters
         public string Text { get; set; }
         public DateTime? Posted { get; set; }
-        public Guid IssueId { get; set; }
+
+        // Table definitions
+        public ApplicationUser User { get; set; }
         public Issue Issue { get; set; }
     }
 }
